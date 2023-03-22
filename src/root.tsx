@@ -1,8 +1,13 @@
-import { component$ } from '@builder.io/qwik';
-import { QwikCityProvider, RouterOutlet, ServiceWorkerRegister } from '@builder.io/qwik-city';
-import { RouterHead } from './components/router-head/router-head';
+import { component$ } from "@builder.io/qwik";
+import {
+  QwikCityProvider,
+  RouterOutlet,
+  ServiceWorkerRegister,
+} from "@builder.io/qwik-city";
+import { RouterHead } from "./components/router-head/router-head";
 
-import './global.css';
+import "./styles/global.css";
+import "@phosphor-icons/web/regular";
 
 export default component$(() => {
   /*
@@ -17,7 +22,7 @@ export default component$(() => {
         <meta charSet="utf-8" />
         <RouterHead />
       </head>
-      <body lang="en">
+      <body class="bg-[#1d1e22]" lang="en">
         <RouterOutlet />
         <ServiceWorkerRegister />
       </body>

@@ -228,6 +228,15 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
+"@phosphor-icons/web@^2.0.3":
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/@phosphor-icons/web/-/web-2.0.3.tgz#69ae977b92d7c330521ddb5bc3a18fd8cbb4d4eb"
+  integrity sha512-9oYmohi2fo87w3DbtfjBoJxrklVojgXq2wuGcqxKccj2TxMq7UIusKDrGUZYOQHM9pUKkh+kvfmutETMGDR6gg==
+
+"@types/@phosphor-icons/web":
+  version "2.0.3"
+  resolved "https://codeload.github.com/phosphor-icons/web/tar.gz/d3b385a38acbb8b16a068e8e2515660af6978cf9"
+
 "@types/acorn@^4.0.0":
   version "4.0.6"
   resolved "https://registry.yarnpkg.com/@types/acorn/-/acorn-4.0.6.tgz#d61ca5480300ac41a7d973dd5b84d0a591154a22"
