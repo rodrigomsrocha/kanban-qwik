@@ -13,7 +13,10 @@ export const ProjectItem = component$(() => {
         <time class="flex items-center gap-2">
           <i class="ph ph-clock"></i>1 min ago
         </time>
-        <button class="flex items-center rounded-md transition-colors px-2 py-1 hover:bg-[#242529]">
+        <button
+          type="button"
+          class="flex items-center rounded-md transition-colors px-2 py-1 hover:bg-[#242529]"
+        >
           <i class="ph ph-dots-three"></i>
         </button>
       </footer>

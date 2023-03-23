@@ -1,5 +1,7 @@
 import { component$ } from "@builder.io/qwik";
+import type { DocumentHead } from "@builder.io/qwik-city";
 import { TaskItem } from "~/components/TaskItem";
+import { CreateTaskModal } from "~/integrations/react/CreateTaskModal";
 
 export default component$(() => {
   return (
@@ -15,13 +17,13 @@ export default component$(() => {
           <h1>Qwik project</h1>
         </nav>
         <div class="flex gap-4">
-          <button class="bg-transparent border-2 border-[#8177fe] w-11 rounded-md text-[#8177fe] transition-colors hover:bg-[#8177fe]/20">
+          <button
+            type="button"
+            class="bg-transparent border-2 border-[#8177fe] w-11 rounded-md text-[#8177fe] transition-colors hover:bg-[#8177fe]/20"
+          >
             <i class="text-xl ph ph-funnel"></i>
           </button>
-          <button class="bg-[#8177fe] px-4 py-2 rounded-md flex gap-2 items-center text-lg transition-opacity hover:opacity-80">
-            <i class="text-xl ph ph-plus"></i>
-            New task
-          </button>
+          <CreateTaskModal client:visible />
         </div>
       </header>
       <div class="w-full bg-[#242529] rounded-md">
@@ -52,3 +54,7 @@ export default component$(() => {
     </div>
   );
 });
+
+export const head: DocumentHead = {
+  title: "Qwik project",
+};
