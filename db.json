@@ -1,0 +1,32 @@
+{
+  "projects": [
+    {
+      "id": 1,
+      "title": "Qwik project",
+      "createdAt": "2023-03-23T12:00:00.000Z",
+      "task": [
+        {
+          "id": 1,
+          "title": "Implement authentication",
+          "description": "implement authentication to the application with auth0",
+          "status": "todo",
+          "tags": ["dev", "learning"]
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Deno crash course",
+      "createdAt": "2023-03-23T20:00:00.000Z",
+      "task": [
+        {
+          "id": 2,
+          "title": "Implement authentication",
+          "description": "implement authentication to the application with auth0",
+          "status": "todo",
+          "tags": ["dev", "learning"]
+        }
+      ]
+    }
+  ]
+}
