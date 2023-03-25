@@ -1,9 +1,28 @@
-import { component$ } from "@builder.io/qwik";
+import { component$, useStore, useTask$ } from "@builder.io/qwik";
 import type { DocumentHead } from "@builder.io/qwik-city";
+import { useLocation } from "@builder.io/qwik-city";
 import { TaskItem } from "~/components/TaskItem";
 import { CreateTaskModal } from "~/integrations/react/CreateTaskModal";
+import { api } from "~/lib/axios";
+import type { ProjectAndTasks } from "~/types/project";
 
 export default component$(() => {
+  const { params } = useLocation();
+  const project = useStore<{ data: ProjectAndTasks }>({
+    data: {} as ProjectAndTasks,
+  });
+
+  useTask$(async () => {
+    const { data } = await api.get<ProjectAndTasks>(
+      `/projects/${params.projectId}?_embed=tasks`
+    );
+    project.data = data;
+  });
+
+  const todo = project.data.tasks?.filter((task) => task.status === "todo");
+  const doing = project.data.tasks?.filter((task) => task.status === "doing");
+  const done = project.data.tasks?.filter((task) => task.status === "done");
+
   return (
     <div>
       <header class="flex justify-between items-center text-gray-200 mb-8">
@@ -14,7 +33,7 @@ export default component$(() => {
           >
             <i class="ph ph-arrow-left"></i>
           </a>
-          <h1>Qwik project</h1>
+          <h1>{project.data.title}</h1>
         </nav>
         <div class="flex gap-4">
           <button
@@ -38,16 +57,19 @@ export default component$(() => {
             Done
           </span>
           <div class="flex flex-col gap-4">
-            <TaskItem />
-            <TaskItem />
+            {todo?.map((task) => (
+              <TaskItem key={task.id} />
+            ))}
           </div>
           <div class="flex flex-col gap-4">
-            <TaskItem />
-            <TaskItem />
-            <TaskItem />
+            {doing?.map((task) => (
+              <TaskItem key={task.id} />
+            ))}
           </div>
           <div class="flex flex-col gap-4">
-            <TaskItem />
+            {done?.map((task) => (
+              <TaskItem key={task.id} />
+            ))}
           </div>
         </div>
       </div>

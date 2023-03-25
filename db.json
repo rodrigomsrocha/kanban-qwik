@@ -9,11 +9,43 @@
       "id": 2,
       "title": "Deno crash course",
       "createdAt": "2023-03-23T20:00:00.000Z"
+    }
+  ],
+  "tasks": [
+    {
+      "id": 1,
+      "projectId": 1,
+      "title": "Implement authentication",
+      "description": "implement authentication to the app with auth 0",
+      "status": "todo"
     },
     {
-      "title": "Create tasks route",
-      "createdAt": "2023-03-24T16:30:49.156Z",
-      "id": 3
+      "id": 2,
+      "projectId": 1,
+      "title": "Implement tasks route",
+      "description": "implement authentication to the app with auth 0",
+      "status": "todo"
+    },
+    {
+      "id": 3,
+      "projectId": 1,
+      "title": "create task",
+      "description": "implement authentication to the app with auth 0",
+      "status": "done"
+    },
+    {
+      "id": 4,
+      "projectId": 2,
+      "title": "Implement authentication auth0",
+      "description": "implement authentication to the app with auth 0",
+      "status": "doing"
+    },
+    {
+      "id": 5,
+      "projectId": 2,
+      "title": "finish app",
+      "description": "implement authentication to the app with auth 0",
+      "status": "todo"
     }
   ]
 }

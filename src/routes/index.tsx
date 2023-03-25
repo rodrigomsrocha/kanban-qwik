@@ -3,22 +3,17 @@ import type { DocumentHead } from "@builder.io/qwik-city";
 import { ProjectItem } from "~/components/ProjectItem";
 import { CreateProjectModal } from "~/integrations/react/CreateProjectModal";
 import { api } from "~/lib/axios";
-
-type ProjectType = {
-  id: number;
-  title: string;
-  createdAt: string;
-};
+import type { Project } from "~/types/project";
 
 export default component$(() => {
-  const projects = useStore<{ data: ProjectType[] }>({ data: [] });
+  const projects = useStore<{ data: Project[] }>({ data: [] });
 
   useTask$(async () => {
-    const { data } = await api.get("/");
+    const { data } = await api.get("/projects");
     projects.data = data;
   });
 
-  const updateProjectsArray = $((project: ProjectType) => {
+  const updateProjectsArray = $((project: Project) => {
     projects.data = [...projects.data, project];
   });
 

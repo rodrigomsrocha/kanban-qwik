@@ -5,15 +5,10 @@ import * as Dialog from "@radix-ui/react-dialog";
 import { useState } from "react";
 import type { FormEvent } from "react";
 import { api } from "~/lib/axios";
-
-type ProjectType = {
-  id: number;
-  title: string;
-  createdAt: string;
-};
+import type { Project } from "~/types/project";
 
 interface CreateProjectModalProps {
-  updateProjectsArray: (data: ProjectType) => void;
+  updateProjectsArray: (data: Project) => void;
 }
 
 export const CreateProjectModal = qwikify$(
@@ -24,7 +19,7 @@ export const CreateProjectModal = qwikify$(
       e.preventDefault();
       if (!title) return;
 
-      const { data } = await api.post<ProjectType>("/", {
+      const { data } = await api.post<Project>("/projects", {
         title: title,
         createdAt: new Date(),
       });
