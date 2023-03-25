@@ -1,22 +1,29 @@
-import { component$, useStore, useTask$ } from "@builder.io/qwik";
+import { $, component$, useStore, useTask$ } from "@builder.io/qwik";
 import type { DocumentHead } from "@builder.io/qwik-city";
 import { useLocation } from "@builder.io/qwik-city";
 import { TaskItem } from "~/components/TaskItem";
 import { CreateTaskModal } from "~/integrations/react/CreateTaskModal";
 import { api } from "~/lib/axios";
-import type { ProjectAndTasks } from "~/types/project";
+import type { ProjectAndTasks, Task } from "~/types/project";
 
 export default component$(() => {
   const { params } = useLocation();
-  const project = useStore<{ data: ProjectAndTasks }>({
-    data: {} as ProjectAndTasks,
-  });
+  const project = useStore<{ data: ProjectAndTasks }>(
+    {
+      data: {} as ProjectAndTasks,
+    },
+    { deep: true }
+  );
 
   useTask$(async () => {
     const { data } = await api.get<ProjectAndTasks>(
       `/projects/${params.projectId}?_embed=tasks`
     );
     project.data = data;
+  });
+
+  const updateTasksArray = $((task: Task) => {
+    project.data.tasks = [...project.data.tasks, task];
   });
 
   const todo = project.data.tasks?.filter((task) => task.status === "todo");
@@ -42,7 +49,11 @@ export default component$(() => {
           >
             <i class="text-xl ph ph-funnel"></i>
           </button>
-          <CreateTaskModal client:visible />
+          <CreateTaskModal
+            updateTasksArray={updateTasksArray}
+            projectId={params.projectId}
+            client:visible
+          />
         </div>
       </header>
       <div class="w-full bg-[#242529] rounded-md">
@@ -58,17 +69,17 @@ export default component$(() => {
           </span>
           <div class="flex flex-col gap-4">
             {todo?.map((task) => (
-              <TaskItem key={task.id} />
+              <TaskItem data={task} key={task.id} />
             ))}
           </div>
           <div class="flex flex-col gap-4">
             {doing?.map((task) => (
-              <TaskItem key={task.id} />
+              <TaskItem data={task} key={task.id} />
             ))}
           </div>
           <div class="flex flex-col gap-4">
             {done?.map((task) => (
-              <TaskItem key={task.id} />
+              <TaskItem data={task} key={task.id} />
             ))}
           </div>
         </div>

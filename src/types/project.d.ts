@@ -9,6 +9,7 @@ export interface Task {
   title: string;
   description: string;
   status: string;
+  tags: string[];
 }
 
 export interface ProjectAndTasks extends Project {

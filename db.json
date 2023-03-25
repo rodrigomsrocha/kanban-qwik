@@ -17,35 +17,40 @@
       "projectId": 1,
       "title": "Implement authentication",
       "description": "implement authentication to the app with auth 0",
-      "status": "todo"
+      "status": "todo",
+      "tags": ["dev", "learning"]
     },
     {
       "id": 2,
       "projectId": 1,
       "title": "Implement tasks route",
       "description": "implement authentication to the app with auth 0",
-      "status": "todo"
+      "status": "todo",
+      "tags": ["dev"]
     },
     {
       "id": 3,
       "projectId": 1,
       "title": "create task",
       "description": "implement authentication to the app with auth 0",
-      "status": "done"
+      "status": "done",
+      "tags": ["dev", "learning"]
     },
     {
       "id": 4,
       "projectId": 2,
       "title": "Implement authentication auth0",
       "description": "implement authentication to the app with auth 0",
-      "status": "doing"
+      "status": "doing",
+      "tags": ["learning"]
     },
     {
       "id": 5,
       "projectId": 2,
       "title": "finish app",
       "description": "implement authentication to the app with auth 0",
-      "status": "todo"
+      "status": "todo",
+      "tags": ["dev", "learning"]
     }
   ]
 }
