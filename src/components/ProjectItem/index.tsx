@@ -1,4 +1,5 @@
 import { component$ } from "@builder.io/qwik";
+import { ProjectPopover } from "~/integrations/react/ProjectPopover";
 import { timeAgo } from "~/utils/timeAgo";
 
 interface ProjectItemProps {
@@ -22,12 +23,7 @@ export const ProjectItem = component$(
             <i class="ph ph-clock"></i>
             {timeAgo(createdAt)}
           </time>
-          <button
-            type="button"
-            class="flex items-center rounded-md transition-colors px-2 py-1 hover:bg-[#242529]"
-          >
-            <i class="ph ph-dots-three"></i>
-          </button>
+          <ProjectPopover client:visible />
         </footer>
       </div>
     );
