@@ -4,27 +4,20 @@ import { qwikify$ } from "@builder.io/qwik-react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { useState } from "react";
 import type { FormEvent } from "react";
-import { api } from "~/lib/axios";
-import type { Project } from "~/types/project";
 
 interface CreateProjectModalProps {
-  updateProjectsArray: (data: Project) => void;
+  createProject: (title: string) => void;
 }
 
 export const CreateProjectModal = qwikify$(
-  ({ updateProjectsArray }: CreateProjectModalProps) => {
+  ({ createProject }: CreateProjectModalProps) => {
     const [title, setTitle] = useState("");
 
-    const createProject = async (e: FormEvent) => {
+    const handleCreateProject = async (e: FormEvent) => {
       e.preventDefault();
       if (!title) return;
 
-      const { data } = await api.post<Project>("/projects", {
-        title: title,
-        createdAt: new Date(),
-      });
-      updateProjectsArray(data);
-
+      createProject(title);
       setTitle("");
     };
 
@@ -48,7 +41,10 @@ export const CreateProjectModal = qwikify$(
                   <i className="text-xl ph ph-x"></i>
                 </Dialog.Close>
               </header>
-              <form onSubmit={createProject} className="flex flex-col gap-2">
+              <form
+                onSubmit={handleCreateProject}
+                className="flex flex-col gap-2"
+              >
                 <label className="text-gray-300 text-lg" htmlFor="name">
                   Project name
                 </label>
