@@ -6,10 +6,19 @@ export interface Project {
 
 export interface Task {
   id: number;
+  projectId: number;
   title: string;
   description: string;
   status: string;
   tags: string[];
+}
+
+export interface CreateTaskData {
+  title: string;
+  projectId: number;
+  description: string;
+  tags: string[];
+  status: string;
 }
 
 export interface ProjectAndTasks extends Project {

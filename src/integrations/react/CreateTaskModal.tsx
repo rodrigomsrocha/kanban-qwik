@@ -4,16 +4,15 @@ import { qwikify$ } from "@builder.io/qwik-react";
 import * as Dialog from "@radix-ui/react-dialog";
 import type { FormEvent } from "react";
 import { useState } from "react";
-import { api } from "~/lib/axios";
-import type { Task } from "~/types/project";
+import type { CreateTaskData } from "~/types/project";
 
 interface CreateTaskModalProps {
-  updateTasksArray: (data: Task) => void;
+  createTask: (task: CreateTaskData) => Promise<void>;
   projectId: string;
 }
 
 export const CreateTaskModal = qwikify$(
-  ({ updateTasksArray, projectId }: CreateTaskModalProps) => {
+  ({ createTask, projectId }: CreateTaskModalProps) => {
     const [taskTitle, setTaskTitle] = useState("");
     const [taskDescription, setTaskDescription] = useState("");
     const [taskTag, setTaskTag] = useState("");
@@ -25,7 +24,7 @@ export const CreateTaskModal = qwikify$(
       setTaskTag("");
     };
 
-    const createTask = async (e: FormEvent) => {
+    const handleCreateTask = async (e: FormEvent) => {
       e.preventDefault();
       if (!taskTitle && !taskDescription) return;
 
@@ -36,10 +35,9 @@ export const CreateTaskModal = qwikify$(
         tags: taskTags,
         status: "todo",
       };
-      const { data } = await api.post("/tasks", { ...task });
+      createTask(task);
       setTaskTitle("");
       setTaskDescription("");
-      updateTasksArray(data);
     };
 
     return (
@@ -62,7 +60,7 @@ export const CreateTaskModal = qwikify$(
                   <i className="text-xl ph ph-x"></i>
                 </Dialog.Close>
               </header>
-              <form onSubmit={createTask} className="flex flex-col gap-2">
+              <form onSubmit={handleCreateTask} className="flex flex-col gap-2">
                 <label className="text-gray-300 text-lg" htmlFor="name">
                   Task title
                 </label>

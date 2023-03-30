@@ -1,4 +1,5 @@
-import { component$ } from "@builder.io/qwik";
+import { component$, useContext } from "@builder.io/qwik";
+import { ProjectContext } from "~/contexts/ProjectContext";
 import { ProjectPopover } from "~/integrations/react/ProjectPopover";
 import { timeAgo } from "~/utils/timeAgo";
 
@@ -10,6 +11,7 @@ interface ProjectItemProps {
 
 export const ProjectItem = component$(
   ({ title, id, createdAt }: ProjectItemProps) => {
+    const { deleteProject } = useContext(ProjectContext);
     return (
       <div class="bg-[#333536] flex flex-col justify-between p-4 h-[150px] rounded-md">
         <a
@@ -23,7 +25,11 @@ export const ProjectItem = component$(
             <i class="ph ph-clock"></i>
             {timeAgo(createdAt)}
           </time>
-          <ProjectPopover client:visible />
+          <ProjectPopover
+            deleteProject={deleteProject}
+            projectId={id}
+            client:visible
+          />
         </footer>
       </div>
     );

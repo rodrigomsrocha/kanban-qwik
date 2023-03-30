@@ -1,34 +1,38 @@
-import { $, component$, useStore, useTask$ } from "@builder.io/qwik";
+import { component$, useContext, useTask$ } from "@builder.io/qwik";
 import type { DocumentHead } from "@builder.io/qwik-city";
+import { routeLoader$ } from "@builder.io/qwik-city";
 import { useLocation } from "@builder.io/qwik-city";
 import { TaskItem } from "~/components/TaskItem";
+import { ProjectContext } from "~/contexts/ProjectContext";
 import { CreateTaskModal } from "~/integrations/react/CreateTaskModal";
 import { api } from "~/lib/axios";
-import type { ProjectAndTasks, Task } from "~/types/project";
+import type { ProjectAndTasks } from "~/types/project";
+
+export const useGetCurrentProject = routeLoader$(async ({ params }) => {
+  const { data } = await api.get<ProjectAndTasks>(
+    `/projects/${params.projectId}/?_embed=tasks`
+  );
+  return { data };
+});
 
 export default component$(() => {
   const { params } = useLocation();
-  const project = useStore<{ data: ProjectAndTasks }>(
-    {
-      data: {} as ProjectAndTasks,
-    },
-    { deep: true }
+  const { value } = useGetCurrentProject();
+  const { createTask, currentProjectStore } = useContext(ProjectContext);
+
+  useTask$(() => {
+    currentProjectStore.data = value.data;
+  });
+
+  const todo = currentProjectStore?.data?.tasks?.filter(
+    (task) => task.status === "todo"
   );
-
-  useTask$(async () => {
-    const { data } = await api.get<ProjectAndTasks>(
-      `/projects/${params.projectId}?_embed=tasks`
-    );
-    project.data = data;
-  });
-
-  const updateTasksArray = $((task: Task) => {
-    project.data.tasks = [...project.data.tasks, task];
-  });
-
-  const todo = project.data.tasks?.filter((task) => task.status === "todo");
-  const doing = project.data.tasks?.filter((task) => task.status === "doing");
-  const done = project.data.tasks?.filter((task) => task.status === "done");
+  const doing = currentProjectStore?.data?.tasks?.filter(
+    (task) => task.status === "doing"
+  );
+  const done = currentProjectStore?.data?.tasks?.filter(
+    (task) => task.status === "done"
+  );
 
   return (
     <div>
@@ -40,7 +44,7 @@ export default component$(() => {
           >
             <i class="ph ph-arrow-left"></i>
           </a>
-          <h1>{project.data.title}</h1>
+          <h1>{currentProjectStore.data.title}</h1>
         </nav>
         <div class="flex gap-4">
           <button
@@ -50,7 +54,7 @@ export default component$(() => {
             <i class="text-xl ph ph-funnel"></i>
           </button>
           <CreateTaskModal
-            updateTasksArray={updateTasksArray}
+            createTask={createTask}
             projectId={params.projectId}
             client:visible
           />
@@ -88,6 +92,7 @@ export default component$(() => {
   );
 });
 
-export const head: DocumentHead = {
-  title: "Qwik project",
+export const head: DocumentHead = ({ resolveValue }) => {
+  const project = resolveValue(useGetCurrentProject);
+  return { title: project.data.title };
 };

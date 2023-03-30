@@ -5,14 +5,17 @@ import {
   Slot,
   useContextProvider,
   useStore,
-  useTask$,
 } from "@builder.io/qwik";
 import { api } from "~/lib/axios";
-import type { ProjectAndTasks } from "~/types/project";
+import type { CreateTaskData, Project, ProjectAndTasks } from "~/types/project";
 
 type ProjectContext = {
-  projectsStore: { data: ProjectAndTasks[] };
-  createProject: (title: string) => void;
+  projectsStore: { data: Project[] };
+  currentProjectStore: { data: ProjectAndTasks };
+  createProject: (title: string) => Promise<void>;
+  createTask: (task: CreateTaskData) => Promise<void>;
+  deleteProject: (projectId: number) => Promise<void>;
+  deleteTask: (taskId: number) => Promise<void>;
 };
 
 export const ProjectContext = createContextId<ProjectContext>(
@@ -20,9 +23,15 @@ export const ProjectContext = createContextId<ProjectContext>(
 );
 
 export const ProjectContextProvider = component$(() => {
-  const projectsStore = useStore<{ data: ProjectAndTasks[] }>({
+  const projectsStore = useStore<{ data: Project[] }>({
     data: [],
   });
+  const currentProjectStore = useStore<{ data: ProjectAndTasks }>(
+    {
+      data: {} as ProjectAndTasks,
+    },
+    { deep: true }
+  );
 
   const createProject = $(async (title: string) => {
     const { data } = await api.post<ProjectAndTasks>("/projects", {
@@ -32,12 +41,41 @@ export const ProjectContextProvider = component$(() => {
     projectsStore.data = [...projectsStore.data, data];
   });
 
-  useTask$(async () => {
-    const { data } = await api.get("/projects?_embed=tasks");
+  const getProjects = $(async () => {
+    const { data } = await api.get("/projects");
     projectsStore.data = data;
   });
 
-  useContextProvider(ProjectContext, { projectsStore, createProject });
+  const getTasksFromCurrentProject = $(async () => {
+    const { data } = await api.get(
+      `/projects/${currentProjectStore.data.id}/?_embed=tasks`
+    );
+    currentProjectStore.data.tasks = [...data.tasks];
+  });
+
+  const deleteProject = $(async (projectId: number) => {
+    await api.delete(`projects/${projectId}`);
+    getProjects();
+  });
+
+  const createTask = $(async (task: CreateTaskData) => {
+    const { data } = await api.post("/tasks", { ...task });
+    currentProjectStore.data.tasks = [...currentProjectStore.data.tasks, data];
+  });
+
+  const deleteTask = $(async (taskId: number) => {
+    await api.delete(`tasks/${taskId}`);
+    getTasksFromCurrentProject();
+  });
+
+  useContextProvider(ProjectContext, {
+    projectsStore,
+    createProject,
+    currentProjectStore,
+    createTask,
+    deleteProject,
+    deleteTask,
+  });
 
   return (
     <>

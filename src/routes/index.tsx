@@ -1,11 +1,24 @@
-import { component$, useContext } from "@builder.io/qwik";
+import { component$, useContext, useTask$ } from "@builder.io/qwik";
 import type { DocumentHead } from "@builder.io/qwik-city";
+import { routeLoader$ } from "@builder.io/qwik-city";
 import { ProjectItem } from "~/components/ProjectItem";
 import { ProjectContext } from "~/contexts/ProjectContext";
 import { CreateProjectModal } from "~/integrations/react/CreateProjectModal";
+import { api } from "~/lib/axios";
+import type { Project } from "~/types/project";
+
+export const useGetProjects = routeLoader$(async () => {
+  const { data } = await api.get<Project[]>("/projects");
+  return { data };
+});
 
 export default component$(() => {
+  const { value } = useGetProjects();
   const { projectsStore, createProject } = useContext(ProjectContext);
+
+  useTask$(() => {
+    projectsStore.data = value.data;
+  });
 
   return (
     <div>
