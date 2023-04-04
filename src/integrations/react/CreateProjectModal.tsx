@@ -60,7 +60,7 @@ export const CreateProjectModal = qwikify$(
                   className="text-gray-200 flex items-center gap-2 justify-center p-2 bg-[#8177fe] rounded-md transition-colors hover:bg-[#8177fe]/80"
                 >
                   <i className="text-xl ph ph-plus"></i>
-                  Create porject
+                  Create project
                 </button>
               </form>
             </Dialog.Content>

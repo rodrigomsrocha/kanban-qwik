@@ -11,7 +11,8 @@ interface ProjectItemProps {
 
 export const ProjectItem = component$(
   ({ title, id, createdAt }: ProjectItemProps) => {
-    const { deleteProject } = useContext(ProjectContext);
+    const { deleteProject, updateProject } = useContext(ProjectContext);
+
     return (
       <div class="bg-[#333536] flex flex-col justify-between p-4 h-[150px] rounded-md">
         <a
@@ -27,6 +28,7 @@ export const ProjectItem = component$(
           </time>
           <ProjectPopover
             deleteProject={deleteProject}
+            updateProject={updateProject}
             projectId={id}
             client:visible
           />

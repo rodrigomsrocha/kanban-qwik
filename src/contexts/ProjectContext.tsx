@@ -16,6 +16,7 @@ type ProjectContext = {
   createTask: (task: CreateTaskData) => Promise<void>;
   deleteProject: (projectId: number) => Promise<void>;
   deleteTask: (taskId: number) => Promise<void>;
+  updateProject: (projectId: number, title: string) => Promise<void>;
 };
 
 export const ProjectContext = createContextId<ProjectContext>(
@@ -23,15 +24,23 @@ export const ProjectContext = createContextId<ProjectContext>(
 );
 
 export const ProjectContextProvider = component$(() => {
-  const projectsStore = useStore<{ data: Project[] }>({
-    data: [],
-  });
+  const projectsStore = useStore<{ data: Project[] }>(
+    {
+      data: [],
+    },
+    { deep: true }
+  );
   const currentProjectStore = useStore<{ data: ProjectAndTasks }>(
     {
       data: {} as ProjectAndTasks,
     },
     { deep: true }
   );
+
+  const updateProjectsStore = $(async () => {
+    const { data } = await api.get("/projects");
+    projectsStore.data = data;
+  });
 
   const createProject = $(async (title: string) => {
     const { data } = await api.post<ProjectAndTasks>("/projects", {
@@ -41,12 +50,7 @@ export const ProjectContextProvider = component$(() => {
     projectsStore.data = [...projectsStore.data, data];
   });
 
-  const getProjects = $(async () => {
-    const { data } = await api.get("/projects");
-    projectsStore.data = data;
-  });
-
-  const getTasksFromCurrentProject = $(async () => {
+  const updateCurrentProject = $(async () => {
     const { data } = await api.get(
       `/projects/${currentProjectStore.data.id}/?_embed=tasks`
     );
@@ -55,7 +59,15 @@ export const ProjectContextProvider = component$(() => {
 
   const deleteProject = $(async (projectId: number) => {
     await api.delete(`projects/${projectId}`);
-    getProjects();
+    updateProjectsStore();
+  });
+
+  const updateProject = $(async (projectId: number, title: string) => {
+    await api.patch(`/projects/${projectId}`, { title });
+    const projectToUpdate = projectsStore.data.findIndex(
+      (project) => project.id === projectId
+    );
+    projectsStore.data[projectToUpdate].title = title;
   });
 
   const createTask = $(async (task: CreateTaskData) => {
@@ -65,7 +77,7 @@ export const ProjectContextProvider = component$(() => {
 
   const deleteTask = $(async (taskId: number) => {
     await api.delete(`tasks/${taskId}`);
-    getTasksFromCurrentProject();
+    updateCurrentProject();
   });
 
   useContextProvider(ProjectContext, {
@@ -75,6 +87,7 @@ export const ProjectContextProvider = component$(() => {
     createTask,
     deleteProject,
     deleteTask,
+    updateProject,
   });
 
   return (
