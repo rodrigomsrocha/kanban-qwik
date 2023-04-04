@@ -8,12 +8,19 @@ interface TaskItemProps {
 }
 
 export const TaskItem = component$(({ data }: TaskItemProps) => {
-  const { deleteTask } = useContext(ProjectContext);
+  const { deleteTask, updateTaskStatus } = useContext(ProjectContext);
+
   return (
     <div class="cursor-grab bg-[#333536] p-4 rounded-md">
       <header class="flex justify-between items-center mb-4">
         <strong class="text-gray-200 text-lg block">{data.title}</strong>
-        <TaskPopover taskId={data.id} deleteTask={deleteTask} client:visible />
+        <TaskPopover
+          updateTaskStatus={updateTaskStatus}
+          currentStatus={data.status}
+          taskId={data.id}
+          deleteTask={deleteTask}
+          client:visible
+        />
       </header>
       <p class="text-gray-300 mb-4">{data.description}</p>
       <div class="flex flex-wrap gap-2">

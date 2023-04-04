@@ -17,6 +17,7 @@ type ProjectContext = {
   deleteProject: (projectId: number) => Promise<void>;
   deleteTask: (taskId: number) => Promise<void>;
   updateProject: (projectId: number, title: string) => Promise<void>;
+  updateTaskStatus: (taskId: number, taskStatus: string) => Promise<void>;
 };
 
 export const ProjectContext = createContextId<ProjectContext>(
@@ -80,6 +81,15 @@ export const ProjectContextProvider = component$(() => {
     updateCurrentProject();
   });
 
+  const updateTaskStatus = $(async (taskId: number, taskStatus: string) => {
+    await api.patch(`/tasks/${taskId}`, { status: taskStatus });
+
+    const taskToUpdate = currentProjectStore.data.tasks.findIndex(
+      (task) => task.id === taskId
+    );
+    currentProjectStore.data.tasks[taskToUpdate].status = taskStatus;
+  });
+
   useContextProvider(ProjectContext, {
     projectsStore,
     createProject,
@@ -88,6 +98,7 @@ export const ProjectContextProvider = component$(() => {
     deleteProject,
     deleteTask,
     updateProject,
+    updateTaskStatus,
   });
 
   return (

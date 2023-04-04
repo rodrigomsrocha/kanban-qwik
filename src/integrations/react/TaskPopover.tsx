@@ -6,11 +6,18 @@ import { useState } from "react";
 
 interface TaskPopoverProps {
   taskId: number;
+  currentStatus: string;
   deleteTask: (taskId: number) => Promise<void>;
+  updateTaskStatus: (taskId: number, taskStatus: string) => Promise<void>;
 }
 
 export const TaskPopover = qwikify$(
-  ({ deleteTask, taskId }: TaskPopoverProps) => {
+  ({
+    deleteTask,
+    currentStatus,
+    updateTaskStatus,
+    taskId,
+  }: TaskPopoverProps) => {
     const [isPopoverOpen, setIsPopoverOpen] = useState(false);
     const [userWantsToDelete, setUserWantsToDelete] = useState(false);
 
@@ -20,6 +27,32 @@ export const TaskPopover = qwikify$(
         return;
       }
       deleteTask(taskId);
+      setIsPopoverOpen(false);
+    };
+
+    const handleStatusUpdate = (direction: "right" | "left") => {
+      switch (direction) {
+        case "right":
+          if (currentStatus === "todo") {
+            updateTaskStatus(taskId, "doing");
+          } else if (currentStatus === "doing") {
+            updateTaskStatus(taskId, "done");
+          } else if (currentStatus === "done") {
+            return;
+          }
+          break;
+        case "left":
+          if (currentStatus === "todo") {
+            return;
+          } else if (currentStatus === "doing") {
+            updateTaskStatus(taskId, "todo");
+          } else if (currentStatus === "done") {
+            updateTaskStatus(taskId, "doing");
+          }
+          break;
+        default:
+          break;
+      }
       setIsPopoverOpen(false);
     };
 
@@ -37,11 +70,21 @@ export const TaskPopover = qwikify$(
         <Popover.Portal>
           <Popover.Content sideOffset={5}>
             <div className="bg-[#1d1e22] p-4 rounded-md flex flex-col gap-2 w-48 shadow-md shadow-zinc-900">
-              <button className="bg-transparent border-none px-2 py-1 rounded-md transition-colors text-gray-300 hover:bg-[#242529] text-left flex gap-2 items-center">
+              <button
+                className="bg-transparent border-none px-2 py-1 rounded-md transition-colors text-gray-300 hover:bg-[#242529] text-left flex gap-2 items-center"
+                onClick={() => {
+                  handleStatusUpdate("left");
+                }}
+              >
                 <i className="ph ph-arrow-bend-up-left"></i>
                 Move left
               </button>
-              <button className="bg-transparent border-none px-2 py-1 rounded-md transition-colors text-gray-300 hover:bg-[#242529] text-left flex gap-2 items-center">
+              <button
+                className="bg-transparent border-none px-2 py-1 rounded-md transition-colors text-gray-300 hover:bg-[#242529] text-left flex gap-2 items-center"
+                onClick={() => {
+                  handleStatusUpdate("right");
+                }}
+              >
                 <i className="ph ph-arrow-bend-up-right"></i>
                 Move right
               </button>

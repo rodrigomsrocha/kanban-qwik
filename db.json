@@ -11,7 +11,7 @@
       "createdAt": "2023-03-23T20:00:00.000Z"
     },
     {
-      "title": "meu deus",
+      "title": "Deus é pai, n é padrasto",
       "createdAt": "2023-04-04T00:27:26.218Z",
       "id": 3
     }
@@ -54,7 +54,7 @@
       "projectId": 2,
       "title": "Implement authentication auth0",
       "description": "implement authentication to the app with auth 0",
-      "status": "doing",
+      "status": "todo",
       "tags": [
         "learning"
       ]
@@ -64,11 +64,21 @@
       "projectId": 2,
       "title": "finish app",
       "description": "implement authentication to the app with auth 0",
-      "status": "todo",
+      "status": "doing",
       "tags": [
         "dev",
         "learning"
       ]
+    },
+    {
+      "title": "mais uma coisa feita",
+      "projectId": 3,
+      "description": "show di balls",
+      "tags": [
+        "update"
+      ],
+      "status": "done",
+      "id": 6
     }
   ]
 }
