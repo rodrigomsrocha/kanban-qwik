@@ -11,8 +11,8 @@
       "createdAt": "2023-03-23T20:00:00.000Z"
     },
     {
-      "title": "Deus é pai, n é padrasto",
-      "createdAt": "2023-04-04T00:27:26.218Z",
+      "title": "Testando drag and drop",
+      "createdAt": "2023-04-08T15:28:19.403Z",
       "id": 3
     }
   ],
@@ -33,7 +33,7 @@
       "projectId": 1,
       "title": "Implement tasks route",
       "description": "implement authentication to the app with auth 0",
-      "status": "done",
+      "status": "doing",
       "tags": [
         "dev"
       ]
@@ -43,7 +43,7 @@
       "projectId": 1,
       "title": "create task",
       "description": "implement authentication to the app with auth 0",
-      "status": "doing",
+      "status": "done",
       "tags": [
         "dev",
         "learning"
@@ -71,11 +71,11 @@
       ]
     },
     {
-      "title": "mais uma coisa feita",
+      "title": "ta funfando ainda : )",
       "projectId": 3,
-      "description": "show di balls",
+      "description": "eu sou muito legal",
       "tags": [
-        "update"
+        "digity"
       ],
       "status": "done",
       "id": 6

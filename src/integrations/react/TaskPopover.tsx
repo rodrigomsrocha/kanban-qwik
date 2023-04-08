@@ -88,10 +88,6 @@ export const TaskPopover = qwikify$(
                 <i className="ph ph-arrow-bend-up-right"></i>
                 Move right
               </button>
-              <button className="bg-transparent border-none px-2 py-1 rounded-md transition-colors text-gray-300 hover:bg-[#242529] text-left flex gap-2 items-center">
-                <i className="ph ph-pencil-simple"></i>
-                Edit
-              </button>
               {userWantsToDelete ? (
                 <div className="flex items-center gap-2 text-gray-300 px-2 py-1">
                   <span>Sure?</span>

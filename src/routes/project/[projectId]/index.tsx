@@ -65,7 +65,13 @@ export default component$(() => {
         </div>
       </header>
       <div class="w-full bg-[#242529] rounded-md">
-        <DragDropTasks data={formattedTasks} />
+        {currentProjectStore.data.tasks.length === 0 ? (
+          <div class="flex items-center justify-center p-8">
+            <h3 class="text-gray-300 text-xl">No tasks here. Create one</h3>
+          </div>
+        ) : (
+          <DragDropTasks data={formattedTasks} />
+        )}
       </div>
     </div>
   );
