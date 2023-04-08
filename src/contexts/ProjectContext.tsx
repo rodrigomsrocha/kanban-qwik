@@ -1,3 +1,4 @@
+import type { QRL } from "@builder.io/qwik";
 import {
   $,
   component$,
@@ -17,7 +18,7 @@ type ProjectContext = {
   deleteProject: (projectId: number) => Promise<void>;
   deleteTask: (taskId: number) => Promise<void>;
   updateProject: (projectId: number, title: string) => Promise<void>;
-  updateTaskStatus: (taskId: number, taskStatus: string) => Promise<void>;
+  updateTaskStatus$: QRL<(taskId: number, taskStatus: string) => Promise<void>>;
 };
 
 export const ProjectContext = createContextId<ProjectContext>(
@@ -81,7 +82,7 @@ export const ProjectContextProvider = component$(() => {
     updateCurrentProject();
   });
 
-  const updateTaskStatus = $(async (taskId: number, taskStatus: string) => {
+  const updateTaskStatus$ = $(async (taskId: number, taskStatus: string) => {
     await api.patch(`/tasks/${taskId}`, { status: taskStatus });
 
     const taskToUpdate = currentProjectStore.data.tasks.findIndex(
@@ -98,7 +99,7 @@ export const ProjectContextProvider = component$(() => {
     deleteProject,
     deleteTask,
     updateProject,
-    updateTaskStatus,
+    updateTaskStatus$,
   });
 
   return (

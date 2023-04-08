@@ -2,11 +2,11 @@ import { component$, useContext, useTask$ } from "@builder.io/qwik";
 import type { DocumentHead } from "@builder.io/qwik-city";
 import { routeLoader$ } from "@builder.io/qwik-city";
 import { useLocation } from "@builder.io/qwik-city";
-import { TaskItem } from "~/components/TaskItem";
+import { DragDropTasks } from "~/components/DragDropTasks";
 import { ProjectContext } from "~/contexts/ProjectContext";
 import { CreateTaskModal } from "~/integrations/react/CreateTaskModal";
 import { api } from "~/lib/axios";
-import type { ProjectAndTasks } from "~/types/project";
+import type { ProjectAndTasks, TaskByStatus } from "~/types/project";
 
 export const useGetCurrentProject = routeLoader$(async ({ params }) => {
   const { data } = await api.get<ProjectAndTasks>(
@@ -24,14 +24,18 @@ export default component$(() => {
     currentProjectStore.data = value.data;
   });
 
-  const todo = currentProjectStore?.data?.tasks?.filter(
-    (task) => task.status === "todo"
-  );
-  const doing = currentProjectStore?.data?.tasks?.filter(
-    (task) => task.status === "doing"
-  );
-  const done = currentProjectStore?.data?.tasks?.filter(
-    (task) => task.status === "done"
+  const formattedTasks = currentProjectStore.data.tasks.reduce(
+    (acc, task) => {
+      if (task.status === "todo") acc.todo.push(task);
+      if (task.status === "doing") acc.doing.push(task);
+      if (task.status === "done") acc.done.push(task);
+      return acc;
+    },
+    {
+      todo: [],
+      doing: [],
+      done: [],
+    } as TaskByStatus
   );
 
   return (
@@ -61,32 +65,7 @@ export default component$(() => {
         </div>
       </header>
       <div class="w-full bg-[#242529] rounded-md">
-        <div class="grid gap-4 grid-cols-3 justify-between p-6 text-gray-200">
-          <span class="before:w-2 before:h-2 before:bg-red-600 before:rounded-full flex items-center gap-2">
-            To Do
-          </span>
-          <span class="before:w-2 before:h-2 before:bg-yellow-600 before:rounded-full flex items-center gap-2">
-            Doing
-          </span>
-          <span class="before:w-2 before:h-2 before:bg-green-600 before:rounded-full flex items-center gap-2">
-            Done
-          </span>
-          <div class="flex flex-col gap-4">
-            {todo?.map((task) => (
-              <TaskItem data={task} key={task.id} />
-            ))}
-          </div>
-          <div class="flex flex-col gap-4">
-            {doing?.map((task) => (
-              <TaskItem data={task} key={task.id} />
-            ))}
-          </div>
-          <div class="flex flex-col gap-4">
-            {done?.map((task) => (
-              <TaskItem data={task} key={task.id} />
-            ))}
-          </div>
-        </div>
+        <DragDropTasks data={formattedTasks} />
       </div>
     </div>
   );

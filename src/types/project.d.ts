@@ -13,6 +13,12 @@ export interface Task {
   tags: string[];
 }
 
+export interface TaskByStatus {
+  todo: Task[];
+  doing: Task[];
+  done: Task[];
+}
+
 export interface CreateTaskData {
   title: string;
   projectId: number;

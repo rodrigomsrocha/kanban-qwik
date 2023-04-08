@@ -33,7 +33,7 @@
       "projectId": 1,
       "title": "Implement tasks route",
       "description": "implement authentication to the app with auth 0",
-      "status": "todo",
+      "status": "done",
       "tags": [
         "dev"
       ]
@@ -43,7 +43,7 @@
       "projectId": 1,
       "title": "create task",
       "description": "implement authentication to the app with auth 0",
-      "status": "done",
+      "status": "doing",
       "tags": [
         "dev",
         "learning"
@@ -64,7 +64,7 @@
       "projectId": 2,
       "title": "finish app",
       "description": "implement authentication to the app with auth 0",
-      "status": "doing",
+      "status": "done",
       "tags": [
         "dev",
         "learning"
