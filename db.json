@@ -9,11 +9,6 @@
       "id": 2,
       "title": "Deno crash course",
       "createdAt": "2023-03-23T20:00:00.000Z"
-    },
-    {
-      "title": "Testando drag and drop",
-      "createdAt": "2023-04-08T15:28:19.403Z",
-      "id": 3
     }
   ],
   "tasks": [
@@ -54,7 +49,7 @@
       "projectId": 2,
       "title": "Implement authentication auth0",
       "description": "implement authentication to the app with auth 0",
-      "status": "todo",
+      "status": "doing",
       "tags": [
         "learning"
       ]
@@ -64,21 +59,11 @@
       "projectId": 2,
       "title": "finish app",
       "description": "implement authentication to the app with auth 0",
-      "status": "done",
+      "status": "todo",
       "tags": [
         "dev",
         "learning"
       ]
-    },
-    {
-      "title": "ta funfando ainda : )",
-      "projectId": 3,
-      "description": "eu sou muito legal",
-      "tags": [
-        "digity"
-      ],
-      "status": "done",
-      "id": 6
     }
   ]
 }
